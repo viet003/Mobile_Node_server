@@ -25,7 +25,7 @@ export const registerService = async ({ username, email, password, role }) => {
                 email: email,
                 password: hash(password),
                 role: role,
-                isactive: 1
+                isActive: 1
             }
         });
         const token = response[1] && jwt.sign({ id: response[0].id, email: response[0].email }, process.env.SECRET_KEY, { expiresIn: '1d' });
@@ -46,7 +46,7 @@ export const loginService = async ({ email, password }) => {
             raw: true,
         });
         const isCorrectPass = response && bcrypt.compareSync(password, response.password)
-        const token = isCorrectPass && jwt.sign({ id: response.id, email: response.email }, process.env.SECRET_KEY, { expiresIn: '1d' });
+        const token = isCorrectPass && jwt.sign({ id: response.id, email: response.email, role:response.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
         return ({
             err: token ? 0 : 2,
             msg: token ? 'Đăng nhập thành công!' : response ? 'Mật khẩu không chính xác!!' : "Email không tồn tại!",

@@ -4,13 +4,13 @@ import * as authService from "../services/authService"
 export const register = async (req, res) => {
     const { username, email, password, role } = req.body;
     try {
-        if (!username || !email || !password || !role) {
+        if (!username || !email || !password) {
             return res.status(400).json({
                 err: 1,
                 msg: "Missing input data!"
             })
         }
-        const rs1 = await authService.registerService(req.body)
+        const rs1 = role ? await authService.registerService(req.body) : await authService.registerService({...req.body, role : 'user'}) 
         return res.status(200).json(rs1)
     } catch (error) {
         return res.status(500).json({
