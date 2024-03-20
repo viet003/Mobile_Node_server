@@ -2,6 +2,7 @@ import db from "../models";
 import bcrypt from "bcryptjs";
 require('dotenv').config();
 import jwt from "jsonwebtoken";
+import { v4 } from "uuid"
 const nodemailer = require('nodemailer');
 
 // tạo mật khẩu ngẫu nhiên
@@ -21,6 +22,7 @@ export const registerService = async ({ username, email, password, role }) => {
         const response = await db.user.findOrCreate({
             where: { email },
             defaults: {
+                id: v4(),
                 username: username,
                 email: email,
                 password: hash(password),
@@ -46,7 +48,7 @@ export const loginService = async ({ email, password }) => {
             raw: true,
         });
         const isCorrectPass = response && bcrypt.compareSync(password, response.password)
-        const token = isCorrectPass && jwt.sign({ id: response.id, email: response.email, role:response.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
+        const token = isCorrectPass && jwt.sign({ id: response.id, email: response.email, username: response.username, role: response.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
         return ({
             err: token ? 0 : 2,
             msg: token ? 'Đăng nhập thành công!' : response ? 'Mật khẩu không chính xác!!' : "Email không tồn tại!",
@@ -217,3 +219,24 @@ export const getPassService = ({ email }) => new Promise(async (resolve, reject)
         reject(error)
     }
 });
+
+// log, unlock account
+export const stateService = async ({ id, isActive }) => {
+    try {
+        const response = await db.user.findOne({ where: { id } });
+        if (response) {
+            const rs = db.user.update({ isActive }, { where: { id } });
+            return {
+                err: rs ? 0 : 2,
+                msg: rs ? 'Thành công' : 'Không thành công'
+            }
+        } else {
+            return {
+                err: 2,
+                msg: 'Tài khoản không tồn tại'
+            }
+        }
+    } catch (error) {
+        throw (error)
+    }
+}

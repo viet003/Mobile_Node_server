@@ -7,5 +7,6 @@ router.post('/register', authController.register)
 router.post('/login', authController.login)
 router.post('/getpass', authController.getPass)
 router.put('/changepass', authController.changePass)
+router.put('/setstate', authController.setState)
 
 export default router

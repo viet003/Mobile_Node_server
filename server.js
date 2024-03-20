@@ -9,6 +9,7 @@ const app = express()
 app.use(cors(
     {
         // origin: process.env.CLIENT_URL,
+        // origin: "http://localhost:58539",
         methods: ["POST", 'GET', 'PUT', "DELETE"]
     }
 ))

@@ -14,7 +14,7 @@ export const register = async (req, res) => {
         return res.status(200).json(rs1)
     } catch (error) {
         return res.status(500).json({
-            err: -1,
+            err: error,
             msg: "Fail at auth controller!/register"
         })
     }
@@ -33,7 +33,7 @@ export const login = async (req, res) => {
         return res.status(200).json(rs)
     } catch (error) {
         return res.status(500).json({
-            err: -1,
+            err: error,
             msg: "Fail at auth controller!/login",
         })
     }
@@ -53,7 +53,7 @@ export const changePass = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            err: -1,
+            err: error,
             msg: "Fail at auth controller!/changePass"
         })
     }
@@ -73,8 +73,27 @@ export const getPass = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            err: -1,
+            err: error,
             msg: "Fail at auth controller!/getPass"
+        })
+    }
+}
+// log, unlock
+export const setState = async (req, res) => {
+    const { id , isActive } = req.body;
+    try {
+        if (!id || !isActive) {
+            return res.status(400).json({
+                err: 1,
+                msg: "Missing input data!"
+            })
+        }
+        const rs = await authService.stateService(req.body)
+        return res.status(200).json(rs)
+    } catch (error) {
+        return res.status(500).json({
+            err: error,
+            msg: "Fail at auth controller!/state"
         })
     }
 }
