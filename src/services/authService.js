@@ -287,7 +287,7 @@ export const getAccountService = async () => {
 // deleete account
 export const deleteAccountService = async ({ id }) => {
     try {
-        const response = await db.user.delete({
+        const response = await db.user.destroy({
             where: { id }
         });
         return {
