@@ -5,7 +5,7 @@ const initRoutes = (app) => {
     app.use('/api', authRouter)
 
     return app.use('/', (req, res) => {
-        console.log("Server onl")
+        // console.log("Server onl")
         res.json("Sever onl...")
     })
 }

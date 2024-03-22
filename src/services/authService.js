@@ -59,40 +59,72 @@ export const loginService = async ({ email, password }) => {
     }
 }
 // đổi mật khẩu
-export const changePassService = async ({ email, password, newpassword }) => {
-    try {
-        const response = await db.user.findOne({
-            where: { email },
-            raw: true
-        });
-        const isCorrectPass = response && bcrypt.compareSync(password, response.password)
-        if (isCorrectPass) {
-            try {
-                await db.user.update({ password: hash(newpassword) }, {
-                    where: {
-                        email,
-                    },
-                });
-                return ({
-                    err: 0,
-                    msg: "Thay đổi mật khẩu thành công!"
-                })
-            } catch (error) {
-                // console.log(error)
+export const changePassService = async ({ email, password, newpassword, role }) => {
+    switch (role) {
+        case 'admin':
+            const response = await db.user.findOne({
+                where: { email },
+                raw: true
+            });
+            if (response) {
+                try {
+                    await db.user.update({ password: hash(newpassword) }, {
+                        where: {
+                            email,
+                        },
+                    });
+                    return ({
+                        err: 0,
+                        msg: "Thay đổi mật khẩu thành công!"
+                    })
+                } catch (error) {
+                    // console.log(error)
+                    return ({
+                        err: 2,
+                        msg: "Không thể update mật khẩu!"
+                    })
+                }
+            } else {
                 return ({
                     err: 2,
-                    msg: "Không thể update mật khẩu!"
+                    msg: "Thông tin tài khoản hoặc mật khẩu không chính xác!"
                 })
             }
-        } else {
-            return ({
-                err: 2,
-                msg: "Thông tin tài khoản hoặc mật khẩu không chính xác!"
-            })
-        }
+        default:
+            try {
+                const response = await db.user.findOne({
+                    where: { email },
+                    raw: true
+                });
+                const isCorrectPass = response && bcrypt.compareSync(password, response.password)
+                if (isCorrectPass) {
+                    try {
+                        await db.user.update({ password: hash(newpassword) }, {
+                            where: {
+                                email,
+                            },
+                        });
+                        return ({
+                            err: 0,
+                            msg: "Thay đổi mật khẩu thành công!"
+                        })
+                    } catch (error) {
+                        // console.log(error)
+                        return ({
+                            err: 2,
+                            msg: "Không thể update mật khẩu!"
+                        })
+                    }
+                } else {
+                    return ({
+                        err: 2,
+                        msg: "Thông tin tài khoản hoặc mật khẩu không chính xác!"
+                    })
+                }
 
-    } catch (error) {
-        throw (error)
+            } catch (error) {
+                throw (error)
+            }
     }
 }
 // lấy lại mật khẩu
@@ -225,7 +257,7 @@ export const stateService = async ({ id, isActive }) => {
     try {
         const response = await db.user.findOne({ where: { id } });
         if (response) {
-            const rs = db.user.update({ isActive }, { where: { id } });
+            const rs = db.user.update({ isActive : !isActive }, { where: { id } });
             return {
                 err: rs ? 0 : 2,
                 msg: rs ? 'Thành công' : 'Không thành công'
@@ -240,3 +272,30 @@ export const stateService = async ({ id, isActive }) => {
         throw (error)
     }
 }
+// get account 
+export const getAccountService = async () => {
+
+    try {
+        const response = await db.user.findAll({
+            attributes: ['id', 'username', 'email', 'isActive', 'role']
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+// deleete account
+export const deleteAccountService = async ({ id }) => {
+    try {
+        const response = await db.user.delete({
+            where: { id }
+        });
+        return {
+            err: response ? 0 : 2,
+            msg: response ? 'Thành công!' : "Không thành công. Có lỗi xảy ra."
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
