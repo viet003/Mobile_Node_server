@@ -10,7 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      user.belongsToMany(models.product, {
+        through: 'cart',
+        foreignKey: 'userid', // Tên cột khóa ngoại của mô hình student trong bảng trung gian
+        otherKey: 'productid', // Tên cột khóa ngoại của mô hình topic trong bảng trung gian
+      })
+
+      user.hasMany(models.comment, {
+        foreignKey: 'userid', // Tên trường trong bảng svAccount lưu khóa ngoại
+        as: 'commentbyuser' // Bí danh cho mối quan hệ
+      });
     }
   }
   user.init({
