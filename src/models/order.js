@@ -15,17 +15,21 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'productid',
         as: 'product_order'
       });
+
+      order.belongsTo(models.info, {
+        foreignKey: 'infoid',
+        as: 'info_order'
+      });
     }
     
     
   }
   order.init({
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    phone: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    productid: DataTypes.INTEGER
+    productid: DataTypes.INTEGER,
+    infoid: DataTypes.INTEGER,
+    count: DataTypes.INTEGER,
+    totalprice: DataTypes.INTEGER,
+    size: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'order',

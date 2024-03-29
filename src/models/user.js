@@ -11,9 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       user.belongsToMany(models.product, {
-        through: 'cart',
+        through: 'favorite',
         foreignKey: 'userid', // Tên cột khóa ngoại của mô hình student trong bảng trung gian
         otherKey: 'productid', // Tên cột khóa ngoại của mô hình topic trong bảng trung gian
+      })
+      
+      user.hasOne(models.info, {
+        foreignKey: 'userid',
+        as: 'user_info'
       })
 
       user.hasMany(models.comment, {

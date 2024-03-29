@@ -16,7 +16,6 @@ export const getProduct = async (req, res) => {
 
 // inert product
 export const insertProduct = async (req, res) => {
-    console.log('hello');
     const { name, description, stars, price, image } = req.body;
     try {
         if (!name || !description || !stars || !price || !image) {

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             product.belongsToMany(models.user, {
-                through: 'cart',
+                through: 'favorite',
                 foreignKey: 'productid', // Tên cột khóa ngoại của mô hình student trong bảng trung gian
                 otherKey: 'userid', // Tên cột khóa ngoại của mô hình topic trong bảng trung gian
             })
@@ -38,3 +38,4 @@ module.exports = (sequelize, DataTypes) => {
     });
     return product;
 };
+

@@ -1,6 +1,6 @@
 import db from "../models";
 
-export const getAllCommentsService = async ({ id }) => {
+export const getAllCommentsService = async ({ productidid }) => {
     try {
         const comments = await db.comment.findAll({
             where: {
