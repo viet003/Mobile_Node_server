@@ -4,16 +4,16 @@ import db from "../models"
 export const getInformationService = async ({ userid }) => {
     try {
         const check = await db.info.findOne({ where: { userid } });
-        if(check) {
+        if (check) {
             return check;
         } else {
-           return {
-            'firstname' : '',
-            'lastname' : '',
-            'phone' : '',
-            'address' : '',
-            'city' : '',
-           }
+            return {
+                'firstname': '',
+                'lastname': '',
+                'phone': '',
+                'address': '',
+                'city': '',
+            }
         }
     } catch (error) {
         throw (error)
@@ -24,10 +24,10 @@ export const getInformationService = async ({ userid }) => {
 // insert product
 export const insertInformationService = async ({ userid, firstname, lastname, phone, address, city }) => {
     try {
-        const check = await db.information.findOne({ where: { userid } });
-        if(check) {
+        const check = await db.info.findOne({ where: { userid } });
+        if (check) {
             try {
-                const response = await db.product.update({
+                const response = await db.info.update({
                     firstname: firstname,
                     lastname: lastname,
                     phone: phone,
@@ -43,8 +43,13 @@ export const insertInformationService = async ({ userid, firstname, lastname, ph
                 throw (error)
             }
         } else {
-            const response = await db.information.create({
-                userid, firstname, lastname, phone, address, city
+            const response = await db.info.create({
+                userid: userid,
+                firstname: firstname,
+                lastname: lastname,
+                phone: phone,
+                address: address,
+                city: city
             });
             return ({
                 err: response ? 0 : 2,

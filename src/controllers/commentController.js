@@ -2,9 +2,9 @@ import * as commentService from "../services/commentService"
 
 // get all comment
 export const getComment = async (req, res) => {
-    const { productid } = req.body
+    const { id } = req.body
     try {
-        if(!productid) {
+        if(!id) {
             return res.status(400).json({
                 err: 1,
                 msg: "Missing input data!"
@@ -31,9 +31,10 @@ export const insertComment = async (req, res) => {
                 msg: "Missing input data!"
             })
         }
-        const rs = await commentService.insertComment(req.body)
+        const rs = await commentService.createCommentService(req.body)
         return res.status(200).json(rs)
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             err: error,
             msg: "Fail at auth controller!/insertcomment"

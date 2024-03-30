@@ -13,23 +13,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       order.belongsTo(models.product, {
         foreignKey: 'productid',
-        as: 'product_order'
+        as: 'productorder'
       });
 
       order.belongsTo(models.info, {
         foreignKey: 'infoid',
-        as: 'info_order'
+        as: 'infoorder'
       });
     }
     
     
   }
   order.init({
+    userid: DataTypes.STRING,
     productid: DataTypes.INTEGER,
     infoid: DataTypes.INTEGER,
     count: DataTypes.INTEGER,
     totalprice: DataTypes.INTEGER,
     size: DataTypes.STRING,
+    state: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'order',

@@ -9,10 +9,6 @@ module.exports = {
                 primaryKey: true,
                 autoIncrement: true
             },
-            productid: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-            },
             userid: {
                 type: Sequelize.STRING,
                 allowNull: false,

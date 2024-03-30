@@ -24,12 +24,12 @@ export const getInformation = async (req, res) => {
 export const insertInformation = async (req, res) => {
     const { userid, firstname, lastname, phone, address, city } = req.body;
     try {
-        // if (!userid || !firstname || !lastname || !phone || !address || !city) {
-        //     return res.status(400).json({
-        //         err: 1,
-        //         msg: "Missing input data!"
-        //     })
-        // }
+        if (!userid || !firstname || !lastname || !phone || !address || !city) {
+            return res.status(400).json({
+                err: 1,
+                msg: "Missing input data!"
+            })
+        }
         const rs = await informationService.insertInformationService(req.body)
         return res.status(200).json(rs)
     } catch (error) {

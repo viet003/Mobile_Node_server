@@ -3,6 +3,8 @@ import * as authController from "../controllers/authController"
 import * as productController from "../controllers/productController"
 import * as informationController from "../controllers/informationController"
 import * as commentController from "../controllers/commentController"
+import * as orderController from "../controllers/orderController"
+
 
 const router = express.Router()
 
@@ -26,10 +28,13 @@ router.post('/getinformation', informationController.getInformation)
 router.post('/insertinformation', informationController.insertInformation)
 
 // comment
-router.get('/getcomment', commentController.getComment)
+router.post('/getcomment', commentController.getComment)
 router.post('/insertcomment', commentController.insertComment)
 router.delete('/deletecomment', commentController.deleteComment)
 
 // order
+router.post('/getorder', orderController.getOrders)
+router.post('/insertorder', orderController.insertOrder)
+router.put('/updateorder', orderController.setState)
 
 export default router
